@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
     'use strict';
 
-    grunt.registerTask("jasmine_node", "Runs jasmine-node.", function() {
+    grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
       // TODO: ditch this when grunt v0.4 is released
@@ -15,22 +15,22 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
-      var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
-      var specFolders     = grunt.config("jasmine_node.specFolders") || [];
-      var source          = grunt.config("jasmine_node.source") || "src";
-      var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
-      var teamcity        = grunt.config("jasmine_node.teamcity") || false;
-      var useRequireJs    = grunt.config("jasmine_node.requirejs") || false;
-      var extensions      = grunt.config("jasmine_node.extensions") || "js";
-      var match           = grunt.config("jasmine_node.match") || ".";
-      var matchall        = grunt.config("jasmine_node.matchall") || false;
-      var autotest        = grunt.config("jasmine_node.autotest") || false;
-      var useHelpers      = grunt.config("jasmine_node.useHelpers") || false;
-      var forceExit       = grunt.config("jasmine_node.forceExit") || false;
-      var useCoffee       = grunt.config("jasmine_node.useCoffee") || false;
+      var projectRoot     = this.data.projectRoot || ".";
+      var specFolders     = this.data.specFolders || [];
+      var source          = this.data.source || "src";
+      var specNameMatcher = this.data.specNameMatcher || "spec";
+      var teamcity        = this.data.teamcity || false;
+      var useRequireJs    = this.data.requirejs || false;
+      var extensions      = this.data.extensions || "js";
+      var match           = this.data.match || ".";
+      var matchall        = this.data.matchall || false;
+      var autotest        = this.data.autotest || false;
+      var useHelpers      = this.data.useHelpers || false;
+      var forceExit       = this.data.forceExit || false;
+      var useCoffee       = this.data.useCoffee || false;
 
-      var isVerbose       = grunt.config("jasmine_node.verbose");
-      var showColors      = grunt.config("jasmine_node.colors");
+      var isVerbose       = this.data.verbose;
+      var showColors      = this.data.colors;
 
       if (projectRoot) {
         specFolders.push(projectRoot);
@@ -51,7 +51,7 @@ module.exports = function (grunt) {
           consolidate: true
       };
 
-      var jUnit = grunt.config("jasmine_node.jUnit") || junitreport;
+      var jUnit = this.data.jUnit || junitreport;
 
       // Tell grunt this task is asynchronous.
       var done = this.async();
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
           }
         }
 
-        done();
+        done(exitCode === 0);
       };
 
       var options = {
